@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, Member
+from models import db, Member, Parent, Children
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -33,6 +33,11 @@ def sitemap():
 def handle_all():
 
     return jsonify(Member.getAllMembers()), 200
+
+@app.route('/member/<int:id>', methods=['GET'])
+def handle_member(id):
+    member = Member.query.get(id)
+    return jsonify(member.serialize()), 200
 
 
 
